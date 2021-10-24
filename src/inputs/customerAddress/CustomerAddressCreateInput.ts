@@ -2,7 +2,7 @@ import { Field, InputType } from "type-graphql";
 import { IsBoolean, IsNumber } from "class-validator";
 
 @InputType()
-export class CustomerAddressInput {
+export class CustomerAddressCreateInput {
     @Field()
     group: string;
 

@@ -1,10 +1,10 @@
 import { Field, ID, Int, ObjectType } from "type-graphql";
 import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
-import { ImportDates } from './ImportDates';
+import { NodeTimestamps } from './interfaces/NodeTimestamps';
 
 @Entity()
 @ObjectType()
-export class User extends ImportDates {
+export class User extends NodeTimestamps {
 
     @Field(() => ID)
     @PrimaryGeneratedColumn()

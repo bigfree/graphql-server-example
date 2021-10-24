@@ -3,12 +3,20 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-input CreateCustomerInput {
-  customerAddress: [CustomerAddressInput!]
-  name: String!
+interface AddressInterface implements Node & NodeTimestamps {
+  city: String
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  postalCode: Int
+  state: String
+  street: String
+  streetNumber: String
+  updatedAt: DateTime
+  uuid: String
 }
 
-type Customer {
+type Customer implements Node & NodeTimestamps {
   createdAt: DateTime!
   customerAddress: [CustomerAddress!]
   deletedAt: DateTime
@@ -18,7 +26,7 @@ type Customer {
   uuid: String
 }
 
-type CustomerAddress {
+type CustomerAddress implements AddressInterface & Node & NodeTimestamps {
   city: String
   createdAt: DateTime!
   customer: Customer!
@@ -32,10 +40,10 @@ type CustomerAddress {
   street: String
   streetNumber: String
   updatedAt: DateTime
-  uuid: String!
+  uuid: String
 }
 
-input CustomerAddressInput {
+input CustomerAddressCreateInput {
   city: String
   description: String
   group: String!
@@ -46,22 +54,41 @@ input CustomerAddressInput {
   streetNumber: String
 }
 
+input CustomerCreateInput {
+  customerAddress: [CustomerAddressCreateInput!]
+  name: String!
+}
+
+input CustomerUpdateInput {
+  name: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
 
 type Mutation {
-  createCustomer(data: CreateCustomerInput!): Customer!
+  createCustomer(data: CustomerCreateInput!): Customer!
   deleteCustomer(id: ID!, name: String, uuid: String): Customer!
-  updateCustomer(data: UpdateCustomerInput!, id: ID!, name: String, uuid: String): Customer!
+  updateCustomer(data: CustomerUpdateInput!, id: ID!, name: String, uuid: String): Customer!
+}
+
+interface Node implements NodeTimestamps {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  updatedAt: DateTime
+  uuid: String
+}
+
+interface NodeTimestamps {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  updatedAt: DateTime
 }
 
 type Query {
   customer(id: ID!, name: String, uuid: String): Customer
   customers: [Customer!]!
-}
-
-input UpdateCustomerInput {
-  name: String!
 }

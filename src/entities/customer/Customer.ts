@@ -1,20 +1,12 @@
-import { Column, Entity, Generated, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Field, ID, ObjectType } from "type-graphql";
-import { ImportDates } from "../ImportDates";
+import { Column, Entity, OneToMany } from "typeorm";
+import { Field, ObjectType } from "type-graphql";
 import { CustomerAddress } from "./CustomerAddress";
+import { Node } from "../interfaces/Node";
+import { NodeTimestamps } from "../interfaces/NodeTimestamps";
 
 @Entity()
-@ObjectType()
-export class Customer extends ImportDates {
-    @Field(() => ID)
-    @PrimaryGeneratedColumn()
-    readonly id: number;
-
-    @Field({ nullable: true })
-    @Generated('uuid')
-    @Column({ type: 'uuid' })
-    readonly uuid?: string;
-
+@ObjectType({ implements: [NodeTimestamps, Node] })
+export class Customer extends Node {
     @Field()
     @Column()
     name: string;

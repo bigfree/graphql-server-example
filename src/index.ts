@@ -1,4 +1,3 @@
-/** load .env */
 import { Customer } from "./entities/customer/Customer";
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
@@ -11,7 +10,7 @@ import { Container as TypeDiContainer } from 'typeorm-typedi-extensions';
 
 import { User } from "./entities/User";
 import { CustomerAddress } from "./entities/customer/CustomerAddress";
-import { CustomerResolver } from "./schema/customer/CustomerResolver";
+import { CustomerResolver } from "./resolvers/customer/CustomerResolver";
 
 require('dotenv').config();
 
