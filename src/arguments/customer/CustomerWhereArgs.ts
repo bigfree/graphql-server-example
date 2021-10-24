@@ -1,7 +1,7 @@
 import { ArgsType, Field, ID } from "type-graphql";
 
 @ArgsType()
-export class CustomerFindArgs {
+export class CustomerWhereArgs {
     @Field(() => ID)
     id: number;
 

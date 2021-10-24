@@ -45,7 +45,6 @@ async function startApolloServer() {
     // noinspection TypeScriptValidateTypes
     const server: ApolloServer = new ApolloServer({
         schema,
-        introspection: true,
         plugins: [
             ApolloServerPluginInlineTrace()
         ],

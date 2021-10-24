@@ -59,6 +59,14 @@ input CustomerCreateInput {
   name: String!
 }
 
+input CustomerOrderInput {
+  createdAt: Orders
+  deletedAt: Orders
+  id: Orders
+  name: Orders
+  updatedAt: Orders
+}
+
 input CustomerUpdateInput {
   name: String!
 }
@@ -88,7 +96,13 @@ interface NodeTimestamps {
   updatedAt: DateTime
 }
 
+"""Order values in table"""
+enum Orders {
+  ASC
+  DESC
+}
+
 type Query {
   customer(id: ID!, name: String, uuid: String): Customer
-  customers: [Customer!]!
+  customers(order: CustomerOrderInput!): [Customer!]!
 }

@@ -1,10 +1,11 @@
 import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
 import { Customer } from "../../entities/customer/Customer";
-import { CustomerFindArgs } from "../../arguments/customer/CustomerFindArgs";
+import { CustomerWhereArgs } from "../../arguments/customer/CustomerWhereArgs";
 import { CustomerCreateInput } from "../../inputs/customer/CustomerCreateInput";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { CustomerUpdateInput } from "../../inputs/customer/CustomerUpdateInput";
+import { CustomerOrderInput } from "../../inputs/customer/CustomerOrderInput";
 
 @Resolver(() => Customer)
 export class CustomerResolver {
@@ -16,12 +17,14 @@ export class CustomerResolver {
 
     /**
      * Get one customer
-     * @param customerArgs
+     * @param customerWhereArgs
      */
     @Query(() => Customer, { nullable: true })
-    async customer(@Args() customerArgs: CustomerFindArgs): Promise<Customer> {
+    async customer(
+        @Args() customerWhereArgs: CustomerWhereArgs,
+    ): Promise<Customer> {
         return await this.customerRepository.findOne({
-            where: customerArgs
+            where: customerWhereArgs,
         });
     }
 
@@ -29,8 +32,12 @@ export class CustomerResolver {
      * Get all customers
      */
     @Query(() => [Customer])
-    async customers(): Promise<Customer[]> {
-        return await this.customerRepository.find();
+    async customers(
+        @Arg("order") customerOrderArgs: CustomerOrderInput,
+    ): Promise<Customer[]> {
+        return await this.customerRepository.find({
+            order: customerOrderArgs
+        });
     }
 
     /**
@@ -49,7 +56,10 @@ export class CustomerResolver {
      * @param data
      */
     @Mutation(() => Customer)
-    async updateCustomer(@Args() customerArgs: CustomerFindArgs, @Arg("data") data: CustomerUpdateInput): Promise<Customer> {
+    async updateCustomer(
+        @Args() customerArgs: CustomerWhereArgs,
+        @Arg("data") data: CustomerUpdateInput
+    ): Promise<Customer> {
         const customer = await this.customerRepository.findOne({
             where: customerArgs
         });
@@ -67,7 +77,7 @@ export class CustomerResolver {
      * @param customerArgs
      */
     @Mutation(() => Customer)
-    async deleteCustomer(@Args() customerArgs: CustomerFindArgs): Promise<Customer> {
+    async deleteCustomer(@Args() customerArgs: CustomerWhereArgs): Promise<Customer> {
         const customer = await this.customerRepository.findOne({
             where: customerArgs
         });
