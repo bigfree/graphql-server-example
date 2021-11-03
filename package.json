@@ -10,9 +10,11 @@
     },
     "dependencies": {
         "apollo-server": "^3.4.0",
+        "bcrypt": "^5.0.1",
         "class-validator": "^0.13.1",
         "dotenv": "^10.0.0",
         "graphql": "^15.6.1",
+        "jsonwebtoken": "^8.5.1",
         "pg": "^8.7.1",
         "reflect-metadata": "^0.1.13",
         "type-graphql": "^1.2.0-rc.1",
@@ -21,6 +23,7 @@
         "typeorm-typedi-extensions": "^0.4.1"
     },
     "devDependencies": {
+        "@types/bcrypt": "^5.0.0",
         "@types/node": "^16.11.4",
         "ava": "^3.15.0",
         "ts-node": "^10.3.1",

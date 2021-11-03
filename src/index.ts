@@ -8,9 +8,10 @@ import { ApolloServerPluginInlineTrace } from "apollo-server-core";
 import { Connection, createConnection, useContainer } from "typeorm";
 import { Container as TypeDiContainer } from 'typeorm-typedi-extensions';
 
-import { User } from "./entities/User";
 import { CustomerAddress } from "./entities/customer/CustomerAddress";
 import { CustomerResolver } from "./resolvers/customer/CustomerResolver";
+import { User } from "./entities/user/User";
+import { UserSignInToken } from "./entities/user/UserSignInToken";
 
 require('dotenv').config();
 
@@ -21,6 +22,9 @@ useContainer(TypeDiContainer);
  * @returns {Promise<void>}
  */
 async function startApolloServer() {
+    /**
+     * Create and connect Postgre DB
+     */
     const connection: Connection = await createConnection({
         type: 'postgres',
         synchronize: true,
@@ -30,11 +34,16 @@ async function startApolloServer() {
         logging: ['query', 'error'],
         entities: [
             User,
+            UserSignInToken,
             Customer,
             CustomerAddress,
         ]
     });
 
+    /**
+     * Create GraphQL schema
+     * https://typegraphql.com
+     */
     const schema: GraphQLSchema = await buildSchema({
         resolvers: [CustomerResolver],
         dateScalarMode: "isoDate",
@@ -43,6 +52,9 @@ async function startApolloServer() {
     });
 
     // noinspection TypeScriptValidateTypes
+    /**
+     * Create ApolloServer
+     */
     const server: ApolloServer = new ApolloServer({
         schema,
         plugins: [
@@ -51,6 +63,7 @@ async function startApolloServer() {
     });
 
     const { url } = await server.listen(process.env.PORT || 4000);
+
     console.log(`🚀 Server ready at ${ url }`);
     console.log(`Try your health check at: ${ url }.well-known/apollo/server-health`);
 }

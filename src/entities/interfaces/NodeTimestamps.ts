@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Field, InterfaceType } from "type-graphql";
+import { IsDate } from "class-validator";
 
 @InterfaceType()
 export abstract class NodeTimestamps {
@@ -13,5 +14,6 @@ export abstract class NodeTimestamps {
 
     @Field({ nullable: true })
     @Column({ type: "timestamp with time zone", nullable: true })
+    @IsDate()
     deletedAt?: Date;
 }
