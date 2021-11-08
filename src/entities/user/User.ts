@@ -2,20 +2,22 @@ import { Column, Entity, OneToMany } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 import { Node } from "../interfaces/Node";
 import { NodeTimestamps } from "../interfaces/NodeTimestamps";
-import { UserSex } from "../../enums/EntityEnums";
+import { UserSex } from "../../enums/UserSexEnums";
 import { UserSignInToken } from "./UserSignInToken";
-import { IsEmail, IsEnum, MaxLength } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, MaxLength } from "class-validator";
 
 @Entity()
 @ObjectType({ implements: [NodeTimestamps, Node] })
 export class User extends Node {
-    @Field({ nullable: true })
+    @Field()
     @Column("varchar", { length: 50 })
+    @IsNotEmpty()
     @MaxLength(50)
     firstName: string;
 
-    @Field({ nullable: true })
+    @Field()
     @Column("varchar", { length: 50 })
+    @IsNotEmpty()
     @MaxLength(50)
     lastName: string;
 
@@ -30,9 +32,6 @@ export class User extends Node {
 
     @Column()
     password: string;
-
-    @Column()
-    passwordSalt: string;
 
     @Field(() => UserSex)
     @Column({

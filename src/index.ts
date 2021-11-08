@@ -12,6 +12,7 @@ import { CustomerAddress } from "./entities/customer/CustomerAddress";
 import { CustomerResolver } from "./resolvers/customer/CustomerResolver";
 import { User } from "./entities/user/User";
 import { UserSignInToken } from "./entities/user/UserSignInToken";
+import { AuthorizeResolver } from "./resolvers/authorize/AuthorizeResolver";
 
 require('dotenv').config();
 
@@ -45,7 +46,7 @@ async function startApolloServer() {
      * https://typegraphql.com
      */
     const schema: GraphQLSchema = await buildSchema({
-        resolvers: [CustomerResolver],
+        resolvers: [AuthorizeResolver, CustomerResolver],
         dateScalarMode: "isoDate",
         emitSchemaFile: path.resolve(__dirname, "schema.gql"),
         container: TypeDiContainer,

@@ -16,6 +16,13 @@ interface AddressInterface implements Node & NodeTimestamps {
   uuid: String
 }
 
+type Authorize {
+  errors: String
+  success: Boolean!
+  token: String!
+  user: User
+}
+
 type Customer implements Node & NodeTimestamps {
   createdAt: DateTime!
   customerAddress: [CustomerAddress!]
@@ -79,6 +86,8 @@ scalar DateTime
 type Mutation {
   createCustomer(data: CustomerCreateInput!): Customer!
   deleteCustomer(id: ID!, name: String, uuid: String): Customer!
+  signIn(data: SignInInput!): Authorize!
+  signUp(data: SignUpInput!): Authorize!
   updateCustomer(data: CustomerUpdateInput!, id: ID!, name: String, uuid: String): Customer!
 }
 
@@ -105,4 +114,54 @@ enum Orders {
 type Query {
   customer(id: ID!, name: String, uuid: String): Customer
   customers(order: CustomerOrderInput!): [Customer!]!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  sex: UserSex!
+}
+
+type User implements Node & NodeTimestamps {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  sex: UserSex!
+  updatedAt: DateTime
+  userSignInToken: [UserSignInToken!]
+  uuid: String
+}
+
+"""Gender of the user"""
+enum UserSex {
+  """Female gender user"""
+  FEMALE
+
+  """Intersex gender user"""
+  INTERSEX
+
+  """Male gender user"""
+  MALE
+}
+
+type UserSignInToken implements Node & NodeTimestamps {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  deviceHash: String
+  id: ID!
+  ipAddress: String
+  token: String!
+  updatedAt: DateTime
+  user: User!
+  uuid: String
 }

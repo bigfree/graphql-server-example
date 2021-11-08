@@ -9,8 +9,9 @@ export class Authorize {
     @Field()
     token: string;
 
+    // TODO: create for custom errors
     @Field({ nullable: true })
-    error?: string;
+    errors?: string;
 
     @Field({ nullable: true })
     user?: User

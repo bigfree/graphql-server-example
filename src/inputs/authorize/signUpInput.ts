@@ -1,9 +1,9 @@
 import { Field, InputType } from "type-graphql";
-import { UserSex } from "../../enums/EntityEnums";
-import { IsEmail, IsEnum, MaxLength } from "class-validator";
+import { UserSex } from "../../enums/UserSexEnums";
+import { IsEmail, IsEnum, IsNotEmpty, MaxLength } from "class-validator";
 
 @InputType()
-export class SignUpCreateInput {
+export class SignUpInput {
     @Field()
     @MaxLength(50)
     firstName: string;
@@ -18,6 +18,10 @@ export class SignUpCreateInput {
     email: string;
 
     @Field()
+    @IsNotEmpty()
+    password: string;
+
+    @Field(() => UserSex)
     @IsEnum(UserSex)
     sex: UserSex
 }
