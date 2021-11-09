@@ -3,25 +3,27 @@ import { Field, ObjectType } from "type-graphql";
 import { NodeTimestamps } from "../interfaces/NodeTimestamps";
 import { Node } from "../interfaces/Node";
 import { User } from "./User";
+import { IsJWT } from "class-validator";
 
 @Entity()
 @ObjectType({ implements: [NodeTimestamps, Node] })
-export class UserSignInToken extends Node {
+export class UserRefreshToken extends Node {
     @Field(() => User)
     @ManyToOne(() => User, (user: User) => user.userSignInToken, {
         onDelete: "CASCADE"
     })
-    user: User;
+    user: Promise<User>;
 
     @Field()
     @Column({ unique: true })
-    token: string;
+    @IsJWT()
+    refreshToken: string;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
     deviceHash?: string;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
-    ipAddress: string;
+    @Field()
+    @Column()
+    validate: Date;
 }

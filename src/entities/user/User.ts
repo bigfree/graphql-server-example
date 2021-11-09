@@ -3,7 +3,7 @@ import { Field, ObjectType } from "type-graphql";
 import { Node } from "../interfaces/Node";
 import { NodeTimestamps } from "../interfaces/NodeTimestamps";
 import { UserSex } from "../../enums/UserSexEnums";
-import { UserSignInToken } from "./UserSignInToken";
+import { UserRefreshToken } from "./UserRefreshToken";
 import { IsEmail, IsEnum, IsNotEmpty, MaxLength } from "class-validator";
 
 @Entity()
@@ -24,7 +24,7 @@ export class User extends Node {
     @Field()
     @Column("varchar", {
         length: 100,
-        unique: true
+        unique: true,
     })
     @IsEmail()
     @MaxLength(100)
@@ -42,10 +42,10 @@ export class User extends Node {
     @IsEnum(UserSex)
     sex: UserSex;
 
-    @Field(() => [UserSignInToken], { nullable: true })
+    @Field(() => [UserRefreshToken], { nullable: true })
     @OneToMany(
-        () => UserSignInToken,
-        (userSignInToken: UserSignInToken) => userSignInToken.user,
+        () => UserRefreshToken,
+        (userSignInToken: UserRefreshToken) => userSignInToken.user,
         {
             nullable: true,
             eager: true,
@@ -53,5 +53,5 @@ export class User extends Node {
             onDelete: "CASCADE"
         }
     )
-    userSignInToken?: UserSignInToken[];
+    userSignInToken?: Promise<UserRefreshToken[]>;
 }

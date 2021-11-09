@@ -11,7 +11,7 @@ import { Container as TypeDiContainer } from 'typeorm-typedi-extensions';
 import { CustomerAddress } from "./entities/customer/CustomerAddress";
 import { CustomerResolver } from "./resolvers/customer/CustomerResolver";
 import { User } from "./entities/user/User";
-import { UserSignInToken } from "./entities/user/UserSignInToken";
+import { UserRefreshToken } from "./entities/user/UserRefreshToken";
 import { AuthorizeResolver } from "./resolvers/authorize/AuthorizeResolver";
 
 require('dotenv').config();
@@ -35,7 +35,7 @@ async function startApolloServer() {
         logging: ['query', 'error'],
         entities: [
             User,
-            UserSignInToken,
+            UserRefreshToken,
             Customer,
             CustomerAddress,
         ]
@@ -58,6 +58,7 @@ async function startApolloServer() {
      */
     const server: ApolloServer = new ApolloServer({
         schema,
+        debug: true,
         plugins: [
             ApolloServerPluginInlineTrace()
         ],
